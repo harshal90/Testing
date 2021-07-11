@@ -1,0 +1,56 @@
+The Service Under Test
+
+Transfer-Service is a service with a REST API that processes money transfers. To validate 
+account information, Transfer-Service must interact with Account-Guard-Service, which is
+a third-party platform
+
+Two Scenarios Must be Automated:
+
+SCENARIO: account information is valid, and transaction is accepted.
+GIVEN: a customer making a transfer from account-A to account-B.
+WHEN: Transfer-Service calls Account-Guard-Service to validate the account 
+information.
+THEN: Account-Guard-Service returns HTTP-200.
+AND: Transfer-Service accepts the transaction.
+
+SCENARIO: account information is invalid, and transaction is rejected.
+GIVEN: a customer making a transfer from account-A to account-B.
+WHEN: Transfer-Service calls Account-Guard-Service to validate the account 
+information.
+THEN: Account-Guard-Service returns HTTP-403.
+AND: Transfer-Service rejects the transaction.
+
+The Problem:
+The development team has a CI pipeline that runs at any time whenever a change is 
+made in Transfer-Service. However, the Account-Guard-Service is only available for 
+testing every day from 1:00am to 3:00am. 
+
+Assignment:
+After considering the problem described above, which of the solutions proposed below do
+you consider the most appropriate to approach the automation of the scenarios above?
+
+a- Test Transfer-Service against a mock of Account-Guard-Service and do not use
+the real Account-Guard-Service at all as it must be properly tested by its 
+provider.
+
+b- Do not automate this case as it is dependent on an external service and may fail 
+due to uncontrollable circumstances.
+
+c- Test Transfer-Service using a mock of Account-Guard-Service during the 
+normal CI phase and add a scheduled job that runs between 1:00 am to 3:00 am to
+test against the real Account-Guard-Service.
+
+d- Add a scheduled job that runs between 1:00 am to 3:00 am to test against the real 
+Account-Guard-Service and exclude these tests completely from the normal CI 
+pipeline
+
+
+Answer - C
+Why - 
+We need to test the core functionality of the API. For that we have to have either the real Account-Guard-Service or a Mock service to mimic it.
+But this mock service is in our control and we mimic the expected outout. To test the Transfer-Service independently, we need a mock service
+
+
+Authorization test is very important and therefore we must test that in the chain with the real Account-Guard-Service.
+The results of the test can sometimes be unpredictable. The external service can respond and fetch unexpected results. We must test that.
+Therefore we must schedule a job that runs in the midnight.

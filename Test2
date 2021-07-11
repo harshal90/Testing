@@ -1,0 +1,21 @@
+Task 2.
+
+Answer the questions below. Write your answers in a file answers.txt and put it into the
+same repository as the result of task 1.
+
+1. What test design techniques would you use to test a feature which grants user access
+to certain resources depending on their age? For example: if a user is older than XX then
+access granted.
+
+-- Boundry Value Analysis
+
+
+2. Given two web services: A and B. Service A is calling service B and expects a response
+with HTTP code 200 (OK).
+Sometimes due to internal problems in service B, it responds with HTTP code 500 
+(Internal server error).
+Your task is to test that service A handles this 500 response gracefully (doesn't crash and
+logs the error).
+How would you do it
+
+-- Create custom exception for service B to handle 500 error code
